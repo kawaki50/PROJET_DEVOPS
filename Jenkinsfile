@@ -69,7 +69,7 @@ pipeline {
                             sonar-scanner \
                                 -Dsonar.projectKey=DevOps-Pipeline \
                                 -Dsonar.projectName="DevOps-Pipeline" \
-                                -Dsonar.sources=app/backend/src,app/frontend/src \
+                                -Dsonar.sources=app/backend,app/frontend \
                                 -Dsonar.exclusions="**/node_modules/**,**/build/**,**/dist/**" \
                                 -Dsonar.host.url=http://localhost:9000 \
                                 -Dsonar.token=$SONAR_TOKEN
