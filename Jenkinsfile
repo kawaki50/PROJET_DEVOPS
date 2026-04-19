@@ -67,8 +67,8 @@ pipeline {
                             -w /usr/src \
                             sonarsource/sonar-scanner-cli:latest \
                             sonar-scanner \
-                                -Dsonar.projectKey=myapp-devops \
-                                -Dsonar.projectName="Application DevOps" \
+                                -Dsonar.projectKey=DevOps-Pipeline \
+                                -Dsonar.projectName="DevOps-Pipeline" \
                                 -Dsonar.sources=app/backend/src,app/frontend/src \
                                 -Dsonar.exclusions="**/node_modules/**,**/build/**,**/dist/**" \
                                 -Dsonar.host.url=http://localhost:9000 \
