@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "vite",
+    "build": "vite build",
     "test": "echo \"✅ Tests Frontend OK\" && exit 0",
-    "eject": "react-scripts eject"
+    "preview": "vite preview"
   },
   "dependencies": {
     "axios": "^1.15.0",
