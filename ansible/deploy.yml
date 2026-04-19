@@ -1,0 +1,57 @@
+---
+- name: Déploiement de l'application web
+  hosts: production
+  become: yes
+  
+  vars:
+    backend_image: "myapp-backend:latest"
+    frontend_image: "myapp-frontend:latest"
+    network_name: "app_network"
+    
+  tasks:
+    - name: Créer le réseau Docker
+      docker_network:
+        name: "{{ network_name }}"
+    
+    - name: Lancer la base de données
+      docker_container:
+        name: postgres_db
+        image: postgres:15-alpine
+        state: started
+        restart_policy: always
+        networks:
+          - name: "{{ network_name }}"
+        env:
+          POSTGRES_DB: "myapp"
+          POSTGRES_USER: "admin"
+          POSTGRES_PASSWORD: "password123"
+        volumes:
+          - /opt/postgres-data:/var/lib/postgresql/data
+    
+    - name: Lancer le backend
+      docker_container:
+        name: backend
+        image: "{{ backend_image }}"
+        state: started
+        restart_policy: always
+        pull: yes
+        networks:
+          - name: "{{ network_name }}"
+        ports:
+          - "5000:5000"
+        env:
+          DB_HOST: "postgres_db"
+          DB_USER: "admin"
+          DB_PASSWORD: "password123"
+    
+    - name: Lancer le frontend
+      docker_container:
+        name: frontend
+        image: "{{ frontend_image }}"
+        state: started
+        restart_policy: always
+        pull: yes
+        networks:
+          - name: "{{ network_name }}"
+        ports:
+          - "80:3000"
