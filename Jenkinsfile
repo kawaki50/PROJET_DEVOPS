@@ -60,7 +60,20 @@ pipeline {
         stage('🔍 SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh 'sonar-scanner'
+                    sh '''
+                        docker run --rm \
+                            --network host \
+                            -v $(pwd):/usr/src \
+                            -w /usr/src \
+                            sonarsource/sonar-scanner-cli:latest \
+                            sonar-scanner \
+                                -Dsonar.projectKey=myapp-devops \
+                                -Dsonar.projectName="Application DevOps" \
+                                -Dsonar.sources=app/backend/src,app/frontend/src \
+                                -Dsonar.exclusions="**/node_modules/**,**/build/**,**/dist/**" \
+                                -Dsonar.host.url=http://localhost:9000 \
+                                -Dsonar.token=$SONAR_TOKEN
+                    '''
                 }
             }
         }
@@ -95,6 +108,10 @@ pipeline {
     }
     
     post {
+        always {
+            // Nettoyer les images Docker temporaires (optionnel)
+            sh 'docker system prune -f || true'
+        }
         success {
             echo '🎉 Pipeline exécuté avec succès !'
         }
