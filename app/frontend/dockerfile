@@ -1,11 +1,28 @@
+# Build stage
 FROM node:24-alpine AS builder
+
 WORKDIR /app
+
+# Copier les fichiers de dépendances
 COPY package*.json ./
-RUN npm ci
+
+# Installer TOUTES les dépendances (y compris devDependencies)
+RUN npm install
+
+# Copier le reste du code
 COPY . .
+
+# Build de l'application React
 RUN npm run build
 
+# Production stage
 FROM nginx:alpine
+
+# Copier les fichiers build vers nginx
 COPY --from=builder /app/build /usr/share/nginx/html
+
+# Exposer le port 80
 EXPOSE 80
+
+# Démarrer nginx
 CMD ["nginx", "-g", "daemon off;"]
