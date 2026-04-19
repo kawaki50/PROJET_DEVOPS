@@ -1,7 +1,18 @@
 FROM node:24-alpine
+
 WORKDIR /app
+
+# Copier les fichiers de dépendances
 COPY package*.json ./
+
+# Installer les dépendances de production
 RUN npm ci --only=production
+
+# Copier le reste du code (server.js)
 COPY . .
+
+# Exposer le port
 EXPOSE 5000
-CMD ["node", "/server.js"]
+
+# Démarrer l'application
+CMD ["node", "server.js"]
