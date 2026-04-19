@@ -32,9 +32,9 @@
       docker_container:
         name: backend
         image: "{{ backend_image }}"
+        pull: no                    # ← AJOUTEZ CECI
         state: started
         restart_policy: always
-        pull: yes
         networks:
           - name: "{{ network_name }}"
         ports:
@@ -48,10 +48,10 @@
       docker_container:
         name: frontend
         image: "{{ frontend_image }}"
+        pull: no                    # ← AJOUTEZ CECI
         state: started
         restart_policy: always
-        pull: yes
         networks:
           - name: "{{ network_name }}"
         ports:
-          - "80:3000"
+          - "80:80"                  # ← Nginx écoute sur 80
