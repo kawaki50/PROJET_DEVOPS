@@ -10,7 +10,7 @@ app.get('/health', (req, res) => {
 // Route principale
 app.get('/', (req, res) => {
   res.json({ 
-    message: 'Backend DevOps fonctionnel !',
+    message: 'Backend DevOps fonctionnel 100%!',
     db_host: process.env.DB_HOST || 'non configuré'
   });
 });
